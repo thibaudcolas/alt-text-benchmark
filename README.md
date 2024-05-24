@@ -2,6 +2,8 @@
 
 A comparison of image alt text as it exists on the web in 2024, and image descriptions generated with large language models.
 
+View our results on Google Sheets: [Wagtail images alt text 2024 review](https://docs.google.com/spreadsheets/d/1MgHVWYuKjdLkqiCOJzli7wQKjmjpeHjLL1naJYHeeDw/edit?usp=sharing)
+
 ## Install
 
 This currently requires an OpenAI API key,
@@ -96,7 +98,7 @@ DIY tutorial: [Image Captioning Using Hugging Face Vision Encoder Decoder — A 
 - https://github.com/haotian-liu/LLaVA
 - https://ollama.com/library/llava
 
-##### LLaVA in production
+#### LLaVA in production
 
 - [LLaVA hosting options? : r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/comments/1775ha5/llava_hosting_options/)
 - [yorickvp/llava-13b – API reference](https://replicate.com/yorickvp/llava-13b/api)
@@ -111,3 +113,20 @@ DIY tutorial: [Image Captioning Using Hugging Face Vision Encoder Decoder — A 
 - [ChatGPT Plus image support](https://www.wired.com/story/chatgpt-plus-image-feature-openai/)
 - https://slate.com/technology/2023/10/ai-image-tools-blind-low-vision.html
 - Built into Google Chrome: https://support.google.com/chrome/answer/9311597?hl=en
+
+## Dataset
+
+The initial dataset of alt texts corresponds to websites’ homepages indexed by the [HTTP Archive](https://httparchive.org/), that have been identified by Wappalyzer as using the [Wagtail](https://wagtail.org/) CMS.
+
+The "Alt text vs. AI description" dataset is a subset of the initial dataset, containing 700 English SFW images primarily sourced from non-commercial sites (.org, .edu, etc). There are a few commercial images in addition (.com).
+
+Images were extracted from homepages’ HTML with the following regular expression, obtained from [detect-wagtail](https://github.com/thibaudcolas/detect-wagtail):
+
+```bash
+rg -o -e '<img[^>]+(\.[a-z]+|\/media)(\/[\w\-]+)?\/(original_images\/[\w\-]+\.|images\/[\w\-.]+\.((fill|max|min|width|height|scale)-\d|original))[^>]+>' wagtail-html > matches.html
+rg -o -e '<img[^>]+>' wagtail-html > matches-any-images.html
+```
+
+- [2024_04_01_all_alt.csv](./dataset/2024_04_01_all_alt.csv): 35k alt text of images on Wagtail websites’ homepages.
+- [2024_04_01_cms_alt.csv](./dataset/2024_04_01_cms_alt.csv): 20k alt text of CMS-managed images on Wagtail websites’ homepages.
+- [2024_04_01_wagtail_all_urls.csv](./dataset/2024_04_01_wagtail_all_urls.csv): source website URLs.
